@@ -207,8 +207,11 @@
     </a-entity>
 
     <!-- march vide plane -->
-    <a-plane id="march_video_panel_1" material="shader: chromakey; src: #march_video; color: 0.0 0 0"; width="1.6" height="0.9" position="-0.58 -3.4 -12.64" scale="4 4 4" visible="false" play-on-click></a-plane>
-    <a-plane id="march_video_panel_2" material="shader: chromakey; src: #march_video2; color: 0 0 0"; width="1.6" height="0.9" position="0.58 3.4 -12.64" rotation="180 180 0" scale="4 4 4" visible="false"></a-plane>
+    <a-entity id="march_video_panel_1" material="shader: chromakey; src: #march_video; color: 0.0 0 0";
+              geometry="primitive: plane; width:1.6; height:0.9;" position="-0.58 -3.4 -12.64" scale="4 4 4" visible="false" play-on-click></a-entity>
+
+    <a-entity id="march_video_panel_2" material="shader: chromakey; src: #march_video2; color: 0 0 0";
+              geometry="primitive: plane; width:1.6; height:0.9;" position="0.58 3.4 -12.64" rotation="180 180 0" scale="4 4 4" visible="false"></a-entity>
 
 </a-scene>
 </body>
