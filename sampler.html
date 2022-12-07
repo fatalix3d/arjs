@@ -30,18 +30,51 @@
           }
         }
       });
+
+    AFRAME.registerComponent('play_march_video', {
+      init: function () {
+        this.onClick = this.onClick.bind(this);
+      },
+      play: function () {
+        window.addEventListener('click', this.onClick);
+      },
+      pause: function () {
+        window.removeEventListener('click', this.onClick);
+      },
+      onClick: function (evt) {
+        console.log('click, clack!');
+        var el = document.querySelector('#march_video_panel_1');
+        var videoEl = el.getAttribute('material').src;
+        if(videoEl==null)
+          return;
+
+        videoEl.play();
+
+        setTimeout(function() {
+          //your code to be executed after 1 second
+          console.log('timer event!');
+          var el = document.querySelector('#march_video_panel_2');
+          var videoEl = el.getAttribute('material').src;
+          if(videoEl==null)
+            return;
+
+          videoEl.play();
+        }, 1500);
+      }
+    });
   </script>
 </head>
 
 <body>
 <a-scene>
   <a-assets>
-    <video id="march_video" autoplay loop="true" src="./marker_data/march/tree_video_b.mp4" width="160" height="90" loop autoplay muted></video>
+    <video id="march_video" src="./marker_data/march/tree_video_b.mp4" width="160" height="90" muted></video>
+    <video id="march_video2" src="./marker_data/march/tree_video_b.mp4" width="160" height="90" muted></video>
   </a-assets>
 
   <a-camera>
-    <a-plane material="shader: chromakey; src: #march_video; color: 0.0 0"; width="1.6" height="0.9" position="-0.58 -1.56 -2.64" scale="1.5 1.5 1.5" play-on-click></a-plane>
-    <a-plane material="shader: chromakey; src: #march_video; color: 0 0 0"; width="1.6" height="0.9" position="0.58 1.56 -2.64" scale="1.5 1.5 1.5"></a-plane>
+    <a-plane id="march_video_panel_1" material="shader: chromakey; src: #march_video; color: 0.0 0 0"; width="1.6" height="0.9" position="-0.58 -1.56 -2.64" scale="1.5 1.5 1.5" play_march_video></a-plane>
+    <a-plane id="march_video_panel_2" material="shader: chromakey; src: #march_video2; color: 0 0 0"; width="1.6" height="0.9" position="0.58 1.56 -2.64" rotation="180 180 0" scale="1.5 1.5 1.5"></a-plane>
   </a-camera>
 
 
