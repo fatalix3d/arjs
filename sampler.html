@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <!--ChromaKey shader-->
+  <script src="https://unpkg.com/aframe-chromakey-material@1.1.4/dist/aframe-chromakey-material.min.js"></script>
+
+    <script>
+      let marker_jan = 1;
+      AFRAME.registerComponent('play-on-click', {
+        init: function () {
+          this.onClick = this.onClick.bind(this);
+        },
+        play: function () {
+          window.addEventListener('click', this.onClick);
+        },
+        pause: function () {
+          window.removeEventListener('click', this.onClick);
+        },
+        onClick: function (evt) {
+          if (marker_jan == 1) {
+            var videoEl = this.el.getAttribute('material').src;
+            if (!videoEl) {
+              return;
+            }
+            this.el.object3D.visible = true;
+            videoEl.play();
+          }
+        }
+      });
+  </script>
+</head>
+
+<body>
+<a-scene>
+  <a-assets>
+    <video id="march_video" autoplay loop="true" src="./marker_data/march/tree_video_b.mp4" width="160" height="90" loop autoplay muted></video>
+  </a-assets>
+
+  <a-camera>
+    <a-plane material="shader: chromakey; src: #march_video; color: 0.0 0"; width="1.6" height="0.9" position="-0.58 -1.56 -2.64" scale="1.5 1.5 1.5" play-on-click></a-plane>
+    <a-plane material="shader: chromakey; src: #march_video; color: 0 0 0"; width="1.6" height="0.9" position="0.58 1.56 -2.64" scale="1.5 1.5 1.5"></a-plane>
+  </a-camera>
+
+
+  <a-box id="hud" color="tomato" depth="1" height="1" width="1" position="0 0 -5" ></a-box>
+</a-scene>
+</body>
+</html>

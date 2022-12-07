@@ -5,8 +5,13 @@
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/dist/mindar-image.prod.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/dist/mindar-image-aframe.prod.js"></script>
+    <!--ChromaKey shader-->
+    <script src="https://unpkg.com/aframe-chromakey-material@1.1.4/dist/aframe-chromakey-material.min.js"></script>
 
     let marker_jan = 0;
+    let marker_march = 0;
+
+
     <script> AFRAME.registerComponent('play-on-click', {
         init: function () {
             this.onClick = this.onClick.bind(this);
@@ -29,6 +34,18 @@
                 var clickIcon = document.querySelector('#january_icon')
                 clickIcon.object3D.visible = false;
             }
+
+            if(marker_jan == 2) {
+                var videoEl = this.el.getAttribute('material').src;
+                if (!videoEl) {
+                    return;
+                }
+                this.el.object3D.visible = true;
+                videoEl.play();
+
+                var clickIcon = document.querySelector('#march_icon')
+                clickIcon.object3D.visible = false;
+            }
         }
     });
 
@@ -44,7 +61,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const january = document.querySelector('#january');
-            var el = document.querySelector('#box');
+            const march = document.querySelector('#march');
 
             // detect target [1] found
             january.addEventListener("targetFound", event => {
@@ -60,6 +77,21 @@
                 videoPlane.object3D.visible = false;
                 marker_jan = 0;
             });
+
+            // detect target [march] found
+            march.addEventListener("targetFound", event => {
+                var clickIcon = document.querySelector('#march_icon')
+                clickIcon.object3D.visible = true;
+                marker_march = 1;
+            });
+            // detect target [march] lost
+            march.addEventListener("targetLost", event => {
+                var videoPlane = document.querySelector('#marchVideoPlane1')
+                var videoEl = videoPlane.getAttribute('material').src;
+                videoEl.pause();
+                videoPlane.object3D.visible = false;
+                marker_march = 0;
+            });
         });
     </script>
 </head>
@@ -71,12 +103,17 @@
         <img id="baloon_img" src="./marker_data/cover/balloon.png">
         <img id="click_img" src="./marker_data/january/click.png">
         <video id="snow" autoplay loop="true" src="./marker_data/january/snow_video.mp4" width="160" height="90" crossOrigin="anonymous" muted></video>
+        <video id="march_video" autoplay loop="true" src="./marker_data/march/tree_video_b.mp4" width="160" height="90" loop autoplay muted></video>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false">
         <!--<a-plane id="box" position="0 0 -10" color="tomato" height="2" width="2" visible="true"></a-plane>-->
-        <a-plane color="#ff0000" width="1.6" height="0.9" position="-0.58 -1.56 -2.64" scale="1.5 1.5 1.5"></a-plane>
-        <a-plane color="#ff0000" width="1.6" height="0.9" position="0.58 1.56 -2.64" scale="1.5 1.5 1.5"></a-plane>
+        <a-plane material="shader: flat; depthTest: false; transparent: true;" color="#ff0000" width="1.6" height="0.9" position="-0.58 -1.56 -2.64" scale="1.5 1.5 1.5"></a-plane>
+        <a-plane material="shader: flat; depthTest: false; transparent: true;" color="#ff0000" width="1.6" height="0.9" position="0.58 1.56 -2.64" scale="1.5 1.5 1.5"></a-plane>
+
+        <!-- Март видео файлы-->
+        <a-plane id="marchVideoPlane1" material="shader: chromakey; src: #march_video; color: 0.0 0"; width="1.6" height="0.9" position="-0.58 -1.56 -2.64" scale="1.5 1.5 1.5" play-on-click></a-plane>
+        <a-plane id="marchVideoPlane2" material="shader: chromakey; src: #march_video; color: 0 0 0"; width="1.6" height="0.9" position="0.58 1.56 -2.64" scale="1.5 1.5 1.5"></a-plane>
     </a-camera>
 
 
@@ -109,6 +146,15 @@
                  height="0.5" width="0.5"
                  position="0 0 0"
                  >
+        </a-image>
+    </a-entity>
+
+    <!--3 Веточки-->
+    <a-entity id="march" mindar-image-target="targetIndex: 2">
+        <a-image id="march_icon" src="#click_img"
+                 height="0.5" width="0.5"
+                 position="0 0 0"
+        >
         </a-image>
     </a-entity>
 
