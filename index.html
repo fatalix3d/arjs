@@ -23,6 +23,7 @@
         },
         onClick: function (evt) {
 
+            /*
             if (marker_jan == 1) {
                 var clickIcon = document.querySelector('#january_icon')
                 clickIcon.object3D.visible = false;
@@ -37,15 +38,16 @@
                 videoEl.play();
             }
 
+             */
+
             if (marker_march == 1) {
                 var clickIcon = document.querySelector('#march_icon')
                 clickIcon.object3D.visible = false;
 
                 var el = document.querySelector('#march_video_panel_1');
                 var videoEl = el.getAttribute('material').src;
-                if (!videoEl) {
+                if(videoEl==null)
                     return;
-                }
                 videoEl.play();
 
                 setTimeout(function() {
