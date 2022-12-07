@@ -2,8 +2,9 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/dist/mindar-image.prod.js"></script>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/dist/mindar-image-aframe.prod.js"></script>
     <!--ChromaKey shader-->
     <script src="https://unpkg.com/aframe-chromakey-material@1.1.4/dist/aframe-chromakey-material.min.js"></script>
@@ -139,33 +140,9 @@
             });
         });
     </script>
-
-    <script>
-        AFRAME.registerComponent("alpha-video", {
-            init: function() {
-                this.materialLoaded = this.materialLoaded.bind(this);
-                console.log("init");
-                // wait until the material is ready
-                this.el.addEventListener("loaded", this.materialLoaded);
-            },
-            materialLoaded: function() {
-                // grab the material
-                let material = this.el.getObject3D("mesh").material;
-                console.log(material.map.format);
-
-                // swap the format
-                material.map.format = THREE.RGBAFormat;
-                material.map.needsUpdate = true;
-                console.log(material.map);
-            },
-            remove: function() {
-                this.el.removeEventListener("loaded", this.materialLoaded);
-            }
-        });
-    </script>
 </head>
 
-<body style="margin : 0px; overflow: hidden;>
+<body style="margin : 0px; overflow: hidden;">
 <a-scene mindar-image="imageTargetSrc: ./marker/targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
     <a-assets>
@@ -235,7 +212,8 @@
 
     <!-- march vide plane -->
     <a-entity id="march_video_panel_1" material="shader: chromakey; transparent: true; src: #march_video; color: 0 0 0";
-              geometry="primitive: plane; width:1.6; height:0.9;" position="-0.58 -3.4 -12.64" scale="4 4 4" visible="false" play-on-click
+              geometry="primitive: plane; width:1.6; height:0.9;" position="-0.58 -3.4 -12.64" scale="4 4 4" visible="false"
+              play-on-click
               alpha-video
     ></a-entity>
 
