@@ -11,6 +11,7 @@
     <script>
     let marker_jan = 0;
     let marker_march = 0;
+    let marker_april = 0;
     </script>
 
     <script> AFRAME.registerComponent('play-on-click', {
@@ -123,6 +124,16 @@
 
                 marker_march = 0;
             });
+
+
+            // detect target [april] found
+            april.addEventListener("targetFound", event => {
+                var el = document.querySelector('#rainbow_image')
+                el.emit(`rainbow_fade_in`, null, false);
+            });
+            // detect target [april] lost
+            april.addEventListener("targetLost", event => {
+            });
         });
     </script>
 </head>
@@ -131,12 +142,14 @@
 <a-scene mindar-image="imageTargetSrc: ./marker/targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
 
     <a-assets>
-        <img id="baloon_img" src="./marker_data/cover/balloon.png">
-        <img id="click_img" src="./marker_data/january/click.png">
-        <video id="snow" src="./marker_data/january/snow_video.mp4" width="160" height="90" crossOrigin="anonymous" muted></video>
+        <img id="baloon_img" src="marker_data/0_cover/balloon.png">
+        <img id="click_img" src="marker_data/1_january/click.png">
+        <video id="snow" src="marker_data/1_january/snow_video.mp4" width="160" height="90" crossOrigin="anonymous" muted></video>
 
         <video id="march_video" src="./marker_data/march/tree_video_b.mp4" width="160" height="90" muted></video>
         <video id="march_video2" src="./marker_data/march/tree_video_b.mp4" width="160" height="90" muted></video>
+
+        <img id="rainbow" src="marker_data/4_april/rainbow.png">
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false">
@@ -179,6 +192,16 @@
         <a-image id="march_icon" src="#click_img"
                  height="0.5" width="0.5"
                  position="0 0 0"
+        >
+        </a-image>
+    </a-entity>
+
+    <!--4 Радуга-->
+    <a-entity id="april" mindar-image-target="targetIndex: 3">
+        <a-image id="rainbow_image" src="#rainbow"
+                 height="0.25" width="1"
+                 position="0 0.2 0"
+                 animation="property: material.opacity; from:0; to: 1; startEvents: rainbow_fade_in; dur: 2500; easing: easeInOutQuad;"
         >
         </a-image>
     </a-entity>
