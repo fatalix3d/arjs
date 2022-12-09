@@ -11,8 +11,10 @@
 
     <script>
     let marker_jan = 0;
+    let marker_feb = 0;
     let marker_march = 0;
     let marker_april = 0;
+
     </script>
 
     <script> AFRAME.registerComponent('play-on-click', {
@@ -51,17 +53,14 @@
                 el.object3D.visible = true;
                 videoEl.play();
 
-                //setTimeout(function () {
-                    var el2 = document.querySelector('#march_video_panel_2');
+                var el2 = document.querySelector('#march_video_panel_2');
 
-                    var videoEl2 = el2.getAttribute('material').src;
-                    if (!videoEl2)
-                        return;
+                var videoEl2 = el2.getAttribute('material').src;
+                if (!videoEl2)
+                    return;
 
-                    el2.object3D.visible = true;
-                    videoEl2.play();
-
-                //}, 1500);
+                el2.object3D.visible = true;
+                videoEl2.play();
             }
         }
     });
@@ -77,8 +76,12 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
             const january = document.querySelector('#january');
             const march = document.querySelector('#march');
+
+            <!--January-->
+            <!-- ====================================================== -->
 
             // detect target [1] found
             january.addEventListener("targetFound", event => {
@@ -98,7 +101,25 @@
                 marker_jan = 0;
             });
 
-            // detect target [march] found
+            <!--Febrary-->
+            <!-- ====================================================== -->
+            var febObj = document.querySelector('#febrary_sprite')
+            // detect target [2] found
+            febrary.addEventListener("targetFound", event => {
+                febObj.emit(`febrary_fade`, null, false);
+                febObj.object3D.visible = true;
+                marker_feb = 1;
+            });
+            // detect target [2] lost
+            febrary.addEventListener("targetLost", event => {
+                febObj.object3D.visible = false;
+                marker_feb = 0;
+            });
+
+            <!--March-->
+            <!-- ====================================================== -->
+
+            // detect target [3] found
             march.addEventListener("targetFound", event => {
                 var clickIcon = document.querySelector('#march_icon')
                 clickIcon.object3D.visible = true;
@@ -108,7 +129,7 @@
 
                 marker_march = 1;
             });
-            // detect target [march] lost
+            // detect target [3] lost
             march.addEventListener("targetLost", event => {
                 var videoPlane = document.querySelector('#march_video_panel_1')
                 var videoEl = videoPlane.getAttribute('material').src;
@@ -126,6 +147,8 @@
                 marker_march = 0;
             });
 
+            <!--April-->
+            <!-- ====================================================== -->
 
             // detect target [april] found
             april.addEventListener("targetFound", event => {
@@ -143,13 +166,17 @@
 <a-scene mindar-image="imageTargetSrc: ./marker/targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
     <a-assets>
+        <!--0 Cover-->
         <img id="baloon_img" src="marker_data/0_cover/balloon.png">
+        <!--1 January-->
         <img id="click_img" src="marker_data/1_jan/click.png">
-        <video id="snow" src="marker_data/1_jan/snow_video.mp4" width="160" height="90" crossOrigin="anonymous" muted></video>
-
+        <video id="snow" src="marker_data/1_jan/snow_video.mp4" width="160" height="90" crossOrigin="anonymous" muted loop="true" playsinline></video>
+        <!--2 Febrary-->
+        <img id="febrary_img" src="marker_data/2_feb/febrary.png">
+        <!--3 March-->
         <video id="march_video" src="marker_data/3_march/tree_video_b.mp4" width="160" height="90" muted autoplay playsinline crossorigin="anonymous"></video>
         <video id="march_video2" src="marker_data/3_march/tree_video_b.mp4" width="160" height="90" muted autoplay playsinline crossorigin="anonymous"></video>
-
+        <!--4 April-->
         <img id="rainbow" src="marker_data/4_april/rainbow.png">
     </a-assets>
 
@@ -158,22 +185,24 @@
 
     </a-camera>
 
-    <!--1 Шары-->
+    <!--0 Cover-->
+    <!-- ====================================================== -->
     <a-entity mindar-image-target="targetIndex: 0">
         <a-image src="#baloon_img"
                  height="0.17" width="0.17"
                  position="0 -0.2 0"
-                 animation="property: object3D.position.y; to: 0.2; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: true;">
+                 animation="property: object3D.position.y; to: 0.2; dur: 15000; easing: easeInOutQuad; dir: alternate; loop: true;">
         </a-image>
 
         <a-image src="#baloon_img"
                  height="0.4" width="0.4"
-                 position="-0.25 0.2 0.15"
-                 animation="property: object3D.position.y; to: -0.2; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: true;">
+                 position="-0.25 0.2 0.05"
+                 animation="property: object3D.position.y; to: -0.2; dur: 15000; easing: easeInOutQuad; dir: alternate; loop: true;">
         </a-image>
     </a-entity>
 
-    <!--2 Снег-->
+    <!--1 January-->
+    <!-- ====================================================== -->
     <a-entity id="january" mindar-image-target="targetIndex: 1">
         <a-image id="january_icon" src="#click_img"
                  height="0.5" width="0.5"
@@ -183,13 +212,28 @@
     </a-entity>
 
     <a-entity id="januaryVideoPlane" material="shader: flat; blending: additive; transparent: true; depthTest: false; opacity: 0.5; src: #snow"
-              geometry="primitive: plane; width: 1.2; height: 0.7;" position="0 0 -10" scale="24 24 1" rotation="0 0 0"
+              geometry="primitive: plane; width: 1.6; height: 0.9;" position="0 0 -10" scale="7 7 1" rotation="0 0 0"
               visible="false"
     >
     </a-entity>
+    <!--2 Febrary-->
+    <!-- ====================================================== -->
+    <a-entity id="febrary" mindar-image-target="targetIndex: 2">
 
-    <!--3 Веточки-->
-    <a-entity id="march" mindar-image-target="targetIndex: 2">
+    </a-entity>
+
+    <a-image id="febrary_sprite" src="#febrary_img"
+             width=1.6 height=0.9
+             position="0 0 -10"
+             scale="7 7 1"
+             animation="property: material.opacity; from:0; to: 1; startEvents: febrary_fade; dur: 5000; easing: easeInOutQuad; loop: false;"
+             visible="false"
+    >
+    </a-image>
+
+    <!--3 March-->
+    <!-- ====================================================== -->
+    <a-entity id="march" mindar-image-target="targetIndex: 3">
         <a-image id="march_icon" src="#click_img"
                  height="0.5" width="0.5"
                  position="0 0 0"
@@ -197,17 +241,6 @@
         </a-image>
     </a-entity>
 
-    <!--4 Радуга-->
-    <a-entity id="april" mindar-image-target="targetIndex: 3">
-        <a-image id="rainbow_image" src="#rainbow"
-                 height="0.25" width="1"
-                 position="0 0.2 0"
-                 animation="property: material.opacity; from:0; to: 1; startEvents: rainbow_fade_in; dur: 2500; easing: easeInOutQuad;"
-        >
-        </a-image>
-    </a-entity>
-
-    <!-- march vide plane -->
     <a-entity id="march_video_panel_1" material="shader: chromakey; transparent: true; src: #march_video; color: 0 0 0";
               geometry="primitive: plane; width:1.6; height:0.9;" position="-0.58 -3.4 -12.64" scale="4 4 4" visible="false"
               play-on-click
@@ -217,6 +250,16 @@
               geometry="primitive: plane; width:1.6; height:0.9;" position="0.58 3.4 -12.64" rotation="180 180 0" scale="4 4 4" visible="false"
     ></a-entity>
 
+    <!--4 April-->
+    <!-- ====================================================== -->
+    <a-entity id="april" mindar-image-target="targetIndex: 4">
+        <a-image id="rainbow_image" src="#rainbow"
+                 height="0.25" width="1"
+                 position="0 0.2 0"
+                 animation="property: material.opacity; from:0; to: 1; startEvents: rainbow_fade_in; dur: 7500; easing: easeInOutQuad; loop: false;"
+        >
+        </a-image>
+    </a-entity>
 
 </a-scene>
 </body>
